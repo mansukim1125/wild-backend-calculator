@@ -12,7 +12,12 @@ public class App {
     }
 
     public void run(int port) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(port), 1);
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 10);
+
+        server.createContext("/calculation", exchange -> {
+           // TODO: 계산기 연산 구현
+        });
+
         server.start();
     }
 }
