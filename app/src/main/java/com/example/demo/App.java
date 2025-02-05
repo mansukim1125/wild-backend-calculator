@@ -1,7 +1,9 @@
 package com.example.demo;
 
+import com.example.demo.domain.Calculation;
 import com.example.demo.dto.CalculationRequestDto;
 import com.example.demo.dto.CalculationResponseDto;
+import com.example.demo.dto.CalculationsResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpServer;
@@ -10,9 +12,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 public class App {
     private final ObjectMapper mapper = new ObjectMapper();
+
+    private final List<Calculation> calculations = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         App app = new App();
@@ -57,9 +63,23 @@ public class App {
                     );
                 }
 
+                if (responseDto != null) {
+                    Calculation calculation = new Calculation(
+                        requestDto.getLhs(),
+                        requestDto.getRhs(),
+                        requestDto.getOperator(),
+                        responseDto.getResult()
+                    );
+
+                    calculations.add(calculation);
+                }
+
+                responseStr = mapper.writeValueAsString(responseDto);
+            } else if (requestMethod.equals("GET")) {
+                CalculationsResponseDto responseDto = new CalculationsResponseDto(this.calculations);
+
                 responseStr = mapper.writeValueAsString(responseDto);
             }
-
 
             Headers responseHeaders = exchange.getResponseHeaders();
             responseHeaders.add("Content-Type", "application/json");
