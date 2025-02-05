@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.domain.Calculation;
 import com.example.demo.dto.CalculationRequestDto;
 import com.example.demo.dto.CalculationResponseDto;
+import com.example.demo.dto.CalculationsResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpServer;
@@ -74,8 +75,11 @@ public class App {
                 }
 
                 responseStr = mapper.writeValueAsString(responseDto);
-            }
+            } else if (requestMethod.equals("GET")) {
+                CalculationsResponseDto responseDto = new CalculationsResponseDto(this.calculations);
 
+                responseStr = mapper.writeValueAsString(responseDto);
+            }
 
             Headers responseHeaders = exchange.getResponseHeaders();
             responseHeaders.add("Content-Type", "application/json");
