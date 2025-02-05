@@ -28,6 +28,12 @@ public class App {
     public void run(int port) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 10);
 
+        this.requestHandler(server);
+
+        server.start();
+    }
+
+    private void requestHandler(HttpServer server) {
         server.createContext("/calculation", exchange -> {
             String responseStr = "{}";
 
@@ -43,32 +49,32 @@ public class App {
                 CalculationResponseDto responseDto = null;
                 if (requestDto.getOperator().equals("+")) {
                     responseDto = new CalculationResponseDto(
-                        requestDto,
-                        requestDto.getLhs() + requestDto.getRhs()
+                            requestDto,
+                            requestDto.getLhs() + requestDto.getRhs()
                     );
                 } else if (requestDto.getOperator().equals("-")) {
                     responseDto = new CalculationResponseDto(
-                        requestDto,
-                        requestDto.getLhs() - requestDto.getRhs()
+                            requestDto,
+                            requestDto.getLhs() - requestDto.getRhs()
                     );
                 } else if (requestDto.getOperator().equals("*")) {
                     responseDto = new CalculationResponseDto(
-                        requestDto,
-                        requestDto.getLhs() * requestDto.getRhs()
+                            requestDto,
+                            requestDto.getLhs() * requestDto.getRhs()
                     );
                 } else if (requestDto.getOperator().equals("/")) {
                     responseDto = new CalculationResponseDto(
-                        requestDto,
-                        requestDto.getLhs() / requestDto.getRhs()
+                            requestDto,
+                            requestDto.getLhs() / requestDto.getRhs()
                     );
                 }
 
                 if (responseDto != null) {
                     Calculation calculation = new Calculation(
-                        requestDto.getLhs(),
-                        requestDto.getRhs(),
-                        requestDto.getOperator(),
-                        responseDto.getResult()
+                            requestDto.getLhs(),
+                            requestDto.getRhs(),
+                            requestDto.getOperator(),
+                            responseDto.getResult()
                     );
 
                     calculations.add(calculation);
@@ -89,8 +95,6 @@ public class App {
             bodyOutputStream.write(responseStr.getBytes());
             bodyOutputStream.close();
         });
-
-        server.start();
     }
 }
 
