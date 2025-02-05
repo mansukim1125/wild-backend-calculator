@@ -50,7 +50,7 @@ public class App {
 
                 responseStr = mapper.writeValueAsString(responseDto);
             } else if (requestMethod.equals("GET")) {
-                CalculationsResponseDto responseDto = new CalculationsResponseDto(this.calculations);
+                CalculationsResponseDto responseDto = this.getCalculations();
 
                 responseStr = mapper.writeValueAsString(responseDto);
             }
@@ -101,6 +101,10 @@ public class App {
         }
 
         return responseDto;
+    }
+
+    private CalculationsResponseDto getCalculations() {
+        return new CalculationsResponseDto(this.calculations);
     }
 }
 
