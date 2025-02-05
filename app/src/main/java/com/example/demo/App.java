@@ -46,39 +46,7 @@ public class App {
 
                 CalculationRequestDto requestDto = mapper.readValue(requestBodyStr, CalculationRequestDto.class);
 
-                CalculationResponseDto responseDto = null;
-                if (requestDto.getOperator().equals("+")) {
-                    responseDto = new CalculationResponseDto(
-                            requestDto,
-                            requestDto.getLhs() + requestDto.getRhs()
-                    );
-                } else if (requestDto.getOperator().equals("-")) {
-                    responseDto = new CalculationResponseDto(
-                            requestDto,
-                            requestDto.getLhs() - requestDto.getRhs()
-                    );
-                } else if (requestDto.getOperator().equals("*")) {
-                    responseDto = new CalculationResponseDto(
-                            requestDto,
-                            requestDto.getLhs() * requestDto.getRhs()
-                    );
-                } else if (requestDto.getOperator().equals("/")) {
-                    responseDto = new CalculationResponseDto(
-                            requestDto,
-                            requestDto.getLhs() / requestDto.getRhs()
-                    );
-                }
-
-                if (responseDto != null) {
-                    Calculation calculation = new Calculation(
-                            requestDto.getLhs(),
-                            requestDto.getRhs(),
-                            requestDto.getOperator(),
-                            responseDto.getResult()
-                    );
-
-                    calculations.add(calculation);
-                }
+                CalculationResponseDto responseDto = this.calculator(requestDto);
 
                 responseStr = mapper.writeValueAsString(responseDto);
             } else if (requestMethod.equals("GET")) {
@@ -95,6 +63,44 @@ public class App {
             bodyOutputStream.write(responseStr.getBytes());
             bodyOutputStream.close();
         });
+    }
+
+    private CalculationResponseDto calculator(CalculationRequestDto requestDto) {
+        CalculationResponseDto responseDto = null;
+        if (requestDto.getOperator().equals("+")) {
+            responseDto = new CalculationResponseDto(
+                    requestDto,
+                    requestDto.getLhs() + requestDto.getRhs()
+            );
+        } else if (requestDto.getOperator().equals("-")) {
+            responseDto = new CalculationResponseDto(
+                    requestDto,
+                    requestDto.getLhs() - requestDto.getRhs()
+            );
+        } else if (requestDto.getOperator().equals("*")) {
+            responseDto = new CalculationResponseDto(
+                    requestDto,
+                    requestDto.getLhs() * requestDto.getRhs()
+            );
+        } else if (requestDto.getOperator().equals("/")) {
+            responseDto = new CalculationResponseDto(
+                    requestDto,
+                    requestDto.getLhs() / requestDto.getRhs()
+            );
+        }
+
+        if (responseDto != null) {
+            Calculation calculation = new Calculation(
+                    requestDto.getLhs(),
+                    requestDto.getRhs(),
+                    requestDto.getOperator(),
+                    responseDto.getResult()
+            );
+
+            calculations.add(calculation);
+        }
+
+        return responseDto;
     }
 }
 
