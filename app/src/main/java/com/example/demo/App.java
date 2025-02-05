@@ -74,6 +74,8 @@ public class App {
                 }
 
                 responseStr = mapper.writeValueAsString(responseDto);
+            } else if (requestMethod.equals("GET")) {
+                
             }
 
 
