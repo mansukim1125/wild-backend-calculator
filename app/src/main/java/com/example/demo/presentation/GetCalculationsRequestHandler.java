@@ -1,22 +1,21 @@
 package com.example.demo.presentation;
 
-import com.example.demo.domain.Calculation;
 import com.example.demo.dto.CalculationsResponseDto;
+import com.example.demo.persistence.CalculationPersistence;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GetCalculationsRequestHandler extends BaseRequestHandler {
-    private final List<Calculation> calculations = new ArrayList<>();
     private final ObjectMapper mapper = new ObjectMapper();
+    private final CalculationPersistence calculationPersistence;
 
-    public GetCalculationsRequestHandler() {
+    public GetCalculationsRequestHandler(CalculationPersistence calculationPersistence) {
         super("GET", "/calculation");
+        this.calculationPersistence = calculationPersistence;
     }
 
     @Override
@@ -35,6 +34,6 @@ public class GetCalculationsRequestHandler extends BaseRequestHandler {
     }
 
     private CalculationsResponseDto getCalculations() {
-        return new CalculationsResponseDto(this.calculations);
+        return new CalculationsResponseDto(this.calculationPersistence.findAll());
     }
 }
