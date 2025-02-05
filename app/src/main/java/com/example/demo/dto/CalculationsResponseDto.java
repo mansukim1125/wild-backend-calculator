@@ -2,16 +2,18 @@ package com.example.demo.dto;
 
 import com.example.demo.domain.Calculation;
 
+import java.util.List;
+
 public class CalculationsResponseDto {
-    private Calculation calculations;
+    private List<Calculation> calculations;
 
     public CalculationsResponseDto() {}
 
-    public CalculationsResponseDto(Calculation calculations) {
+    public CalculationsResponseDto(List<Calculation> calculations) {
         this.calculations = calculations;
     }
 
-    public Calculation getCalculations() {
+    public List<Calculation> getCalculations() {
         return calculations;
     }
 }
