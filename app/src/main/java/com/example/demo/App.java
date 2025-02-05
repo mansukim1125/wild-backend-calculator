@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.domain.Calculation;
 import com.example.demo.dto.CalculationRequestDto;
 import com.example.demo.dto.CalculationResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,9 +11,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class App {
     private final ObjectMapper mapper = new ObjectMapper();
+
+    private final List<Calculation> calculations = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         App app = new App();
@@ -55,6 +61,17 @@ public class App {
                         requestDto,
                         requestDto.getLhs() / requestDto.getRhs()
                     );
+                }
+
+                if (responseDto != null) {
+                    Calculation calculation = new Calculation(
+                        requestDto.getLhs(),
+                        requestDto.getRhs(),
+                        requestDto.getOperator(),
+                        responseDto.getResult()
+                    );
+
+                    calculations.add(calculation);
                 }
 
                 responseStr = mapper.writeValueAsString(responseDto);
