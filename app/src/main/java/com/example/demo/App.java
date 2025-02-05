@@ -40,6 +40,11 @@ public class App {
                         requestDto,
                         requestDto.getLhs() + requestDto.getRhs()
                     );
+                } else if (requestDto.getOperator().equals("-")) {
+                    responseDto = new CalculationResponseDto(
+                        requestDto,
+                        requestDto.getLhs() - requestDto.getRhs()
+                    );
                 }
 
                 responseStr = mapper.writeValueAsString(responseDto);
