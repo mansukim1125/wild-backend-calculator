@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.persistence.CalculationPersistence;
 import com.example.demo.presentation.BaseRequestHandler;
 import com.example.demo.presentation.GetCalculationsRequestHandler;
 import com.example.demo.presentation.PostCalculationRequestHandler;
@@ -21,8 +22,10 @@ public class App {
     public void run(int port) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 10);
 
-        BaseRequestHandler postCalculationRequestHandler = new PostCalculationRequestHandler();
-        BaseRequestHandler getCalculationsRequestHandler = new GetCalculationsRequestHandler();
+        CalculationPersistence calculationPersistence = new CalculationPersistence();
+
+        BaseRequestHandler postCalculationRequestHandler = new PostCalculationRequestHandler(calculationPersistence);
+        BaseRequestHandler getCalculationsRequestHandler = new GetCalculationsRequestHandler(calculationPersistence);
 
         requestHandlerMap.put(
             postCalculationRequestHandler.getMethod() + " " +

@@ -3,6 +3,7 @@ package com.example.demo.presentation;
 import com.example.demo.domain.Calculation;
 import com.example.demo.dto.CalculationRequestDto;
 import com.example.demo.dto.CalculationResponseDto;
+import com.example.demo.persistence.CalculationPersistence;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -10,15 +11,14 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PostCalculationRequestHandler extends BaseRequestHandler {
     private final ObjectMapper mapper = new ObjectMapper();
-    private final List<Calculation> calculations = new ArrayList<>();
+    private final CalculationPersistence calculationPersistence;
 
-    public PostCalculationRequestHandler() {
+    public PostCalculationRequestHandler(CalculationPersistence calculationPersistence) {
         super("POST", "/calculation");
+        this.calculationPersistence = calculationPersistence;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class PostCalculationRequestHandler extends BaseRequestHandler {
                 responseDto.getResult()
             );
 
-            calculations.add(calculation);
+            this.calculationPersistence.create(calculation);
         }
 
         return responseDto;
