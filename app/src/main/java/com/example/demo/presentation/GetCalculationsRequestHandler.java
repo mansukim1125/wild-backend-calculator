@@ -3,11 +3,9 @@ package com.example.demo.presentation;
 import com.example.demo.dto.CalculationsResponseDto;
 import com.example.demo.persistence.CalculationPersistence;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 public class GetCalculationsRequestHandler extends BaseRequestHandler {
     private final ObjectMapper mapper = new ObjectMapper();
@@ -24,13 +22,7 @@ public class GetCalculationsRequestHandler extends BaseRequestHandler {
 
         String responseStr = mapper.writeValueAsString(responseDto);
 
-        Headers responseHeaders = exchange.getResponseHeaders();
-        responseHeaders.add("Content-Type", "application/json");
-        exchange.sendResponseHeaders(200, responseStr.length());
-
-        OutputStream bodyOutputStream = exchange.getResponseBody();
-        bodyOutputStream.write(responseStr.getBytes());
-        bodyOutputStream.close();
+        this.response(exchange, responseStr, 200);
     }
 
     private CalculationsResponseDto getCalculations() {
