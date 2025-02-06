@@ -27,7 +27,7 @@ public class CalculationCreateResource extends ResourceMethodHandler {
 
         this.calculationPersistence.create(calculation);
 
-        CalculationResponseDto responseDto = new CalculationResponseDto(requestDto, calculation.getResult());
+        CalculationResponseDto responseDto = new CalculationResponseDto(calculation.getResult());
 
         return mapper.writeValueAsString(responseDto);
     }
