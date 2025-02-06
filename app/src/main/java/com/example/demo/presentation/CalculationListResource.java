@@ -2,27 +2,23 @@ package com.example.demo.presentation;
 
 import com.example.demo.dto.CalculationsResponseDto;
 import com.example.demo.persistence.CalculationPersistence;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.net.httpserver.HttpExchange;
 
-import java.io.IOException;
-
-public class GetCalculationsRequestHandler extends BaseRequestHandler {
+public class CalculationListResource extends ResourceMethodHandler {
     private final ObjectMapper mapper = new ObjectMapper();
     private final CalculationPersistence calculationPersistence;
 
-    public GetCalculationsRequestHandler(CalculationPersistence calculationPersistence) {
-        super("GET", "/calculation");
+    public CalculationListResource(CalculationPersistence calculationPersistence) {
+        super("GET", "/calculations");
         this.calculationPersistence = calculationPersistence;
     }
 
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    public String handle(String requestStr) throws JsonProcessingException {
         CalculationsResponseDto responseDto = this.getCalculations();
 
-        String responseStr = mapper.writeValueAsString(responseDto);
-
-        this.response(exchange, responseStr, 200);
+        return mapper.writeValueAsString(responseDto);
     }
 
     private CalculationsResponseDto getCalculations() {
